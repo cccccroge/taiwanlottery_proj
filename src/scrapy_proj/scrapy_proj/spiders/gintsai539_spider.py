@@ -25,8 +25,16 @@ class Gintsai539Spider(scrapy.Spider):
                     callback=self.parse)]
 
     def parse(self, response):
-        filename = os.path.join(DATA_FOLDER, 'test.html')
-        print('filename:', filename)
-        with open(filename, 'wb') as f:
-            f.write(response.body)
-        self.log(f'Saved file {filename}')
+        tables = response.xpath('//*/table[contains(@class, "td_hm")]')
+
+        for t in tables:
+            date = t.xpath('.//tr[2]/td[2]/span/span/text()').get()
+            num_1 = t.xpath('.//tr[2]/td[4]/span/text()').get()
+            num_2 = t.xpath('.//tr[2]/td[5]/span/text()').get()
+            num_3 = t.xpath('.//tr[2]/td[6]/span/text()').get()
+            num_4 = t.xpath('.//tr[2]/td[7]/span/text()').get()
+            num_5 = t.xpath('.//tr[2]/td[8]/span/text()').get()
+            yield {
+                'date': date,
+                'nums': [num_1, num_2, num_3, num_4, num_5],
+            }
