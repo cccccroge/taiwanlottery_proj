@@ -1,6 +1,5 @@
 import scrapy
 from scrapy.http import FormRequest
-from utils.paths import DATA_FOLDER
 import os.path
 
 class Gintsai539Spider(scrapy.Spider):
