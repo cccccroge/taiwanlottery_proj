@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 scrapy = "*"
 python-dateutil = "*"
+openpyxl = "*"
+numpy = "*"
 
 [dev-packages]
 
