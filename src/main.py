@@ -15,7 +15,8 @@ SETTINGS = {
 
 def main():
     output_path = os.path.join(DATA_FOLDER, f'{SETTINGS["game"]["key"]}.json')
-    crawl_to_json(output_path, SETTINGS["game"]["key"], SETTINGS["start_year_month"]) \
+    output_path_for_scrapy_on_windows = os.path.join(DATA_FOLDER, f'{SETTINGS["game"]["key"]}:json')
+    crawl_to_json(output_path_for_scrapy_on_windows, SETTINGS["game"]["key"], SETTINGS["start_year_month"]) \
         .wait()
     d = load_and_sort(output_path)
     create_analyzing_excel(d)
