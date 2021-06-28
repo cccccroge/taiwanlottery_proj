@@ -1,5 +1,5 @@
 import os
-from utils.paths import SCRAPY_FOLDER, DATA_FOLDER
+from utils.paths import DAD_WINDOWS_DESKTOP
 from openpyxl import Workbook
 from utils.constant import GAMES
 import numpy as np
@@ -9,6 +9,7 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from scrapy.signalmanager import dispatcher
 from scrapy import signals
+from datetime import datetime
 
 SETTINGS = {
     'game': GAMES['gin'],
@@ -44,7 +45,9 @@ def create_analyzing_excel(src_list):
     construct_sum_sheet(wb, src_list)
     construct_tail_sheet(wb, src_list)
     construct_indi_sheet(wb, src_list)
-    wb.save(os.path.join(DATA_FOLDER, f'{SETTINGS["game"]["label"]}.xlsx'))
+
+    time = datetime.now().strftime("%Y%m%d_%H%M%S")
+    wb.save(os.path.join(DAD_WINDOWS_DESKTOP, f'{SETTINGS["game"]["label"]}_{time}.xlsx'))
     
 def construct_sum_sheet(wb, list):
     ws = wb.active
