@@ -14,11 +14,14 @@ SETTINGS = {
 }
 
 def main():
-    output_path = os.path.join(DATA_FOLDER, f'{SETTINGS["game"]["key"]}.json')
-    output_path_for_scrapy_on_windows = os.path.join(DATA_FOLDER, f'{SETTINGS["game"]["key"]}:json')
-    crawl_to_json(output_path_for_scrapy_on_windows, SETTINGS["game"]["key"], SETTINGS["start_year_month"]) \
+    file_name = f'{SETTINGS["game"]["key"]}.json'
+    crawler_output_path = os.path.join(SCRAPY_FOLDER, file_name)
+    desired_crawler_output_path = os.path.join(DATA_FOLDER, file_name)
+    # cannot direcly specify absolute path when crawling (windows compatibility)
+    crawl_to_json(file_name, SETTINGS["game"]["key"], SETTINGS["start_year_month"]) \
         .wait()
-    d = load_and_sort(output_path)
+    move_json(crawler_output_path, desired_crawler_output_path)
+    d = load_and_sort(desired_crawler_output_path)
     create_analyzing_excel(d)
 
 def crawl_to_json(output_path, type, start_year_month):
@@ -28,6 +31,9 @@ def crawl_to_json(output_path, type, start_year_month):
         '-a', f'start_year_month={start_year_month}',
     ], cwd=SCRAPY_FOLDER)
     return p
+
+def move_json(from_path, to_path):
+    os.replace(from_path, to_path)
 
 def load_and_sort(output_path):
     with open(output_path) as f:
