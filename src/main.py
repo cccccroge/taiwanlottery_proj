@@ -67,7 +67,8 @@ def construct_sum_sheet(wb, list):
 def construct_tail_sheet(wb, list):
     ws = wb.create_sheet(title='尾數')
     ws.append(get_tail_header())
-    
+    ws.append(40 * ['']) # set style after will cause no empty line at line 2, so manully add it
+
     for item in list:
         r = get_tail_row_by_item(item)
         ws.append(r)
