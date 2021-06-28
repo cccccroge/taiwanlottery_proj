@@ -2,13 +2,7 @@ import scrapy
 from scrapy.http import FormRequest
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
-
-# hacky import as the root dir is changed by main.py
-import sys, os
-from pathlib import Path
-utils = os.path.join(Path(__file__).parent.parent.parent.parent, 'utils')
-sys.path.append(utils)
-from date import iter_year_month
+from utils.date import iter_year_month
 
 class Gintsai539Spider(scrapy.Spider):
     name = "gintsai539"

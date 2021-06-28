@@ -1,12 +1,14 @@
-import subprocess
 import os
 from utils.paths import SCRAPY_FOLDER, DATA_FOLDER
-import json
 from openpyxl import Workbook
 from utils.constant import GAMES
 import numpy as np
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Border, Side, PatternFill
+from scrapy.crawler import CrawlerProcess
+from scrapy.utils.project import get_project_settings
+from scrapy.signalmanager import dispatcher
+from scrapy import signals
 
 SETTINGS = {
     'game': GAMES['gin'],
@@ -14,36 +16,28 @@ SETTINGS = {
 }
 
 def main():
-    file_name = f'{SETTINGS["game"]["key"]}.json'
-    crawler_output_path = os.path.join(SCRAPY_FOLDER, file_name)
-    desired_crawler_output_path = os.path.join(DATA_FOLDER, file_name)
-    # cannot direcly specify absolute path when crawling (windows compatibility)
-    crawl_to_json(file_name, SETTINGS["game"]["key"], SETTINGS["start_year_month"]) \
-        .wait()
-    move_json(crawler_output_path, desired_crawler_output_path)
-    d = load_and_sort(desired_crawler_output_path)
-    create_analyzing_excel(d)
+    l = crawl_to_list(SETTINGS["game"], SETTINGS["start_year_month"])
+    sort_list_by_date(l)
+    create_analyzing_excel(l)
 
-def crawl_to_json(output_path, type, start_year_month):
-    p = subprocess.Popen([
-        'scrapy', 'crawl', type,
-        '-O', output_path,
-        '-a', f'start_year_month={start_year_month}',
-    ], cwd=SCRAPY_FOLDER)
-    return p
+def crawl_to_list(game, start_year_month):
+    result = []
+    def callback(signal, sender, item, response, spider):
+        result.append(item)
+    dispatcher.connect(callback, signal=signals.item_passed)
 
-def move_json(from_path, to_path):
-    os.replace(from_path, to_path)
+    process = CrawlerProcess(get_project_settings())
+    process.crawl(game['spider'], start_year_month=start_year_month)
+    process.start()
 
-def load_and_sort(output_path):
-    with open(output_path) as f:
-        d = json.load(f)
-        d.sort(key=lambda item: 
-            int(item['date'][7:]) + 
-            int(item['date'][4:6]) * 31 + 
-            int(item['date'][:3]) * 12 * 31
-        )
-        return d
+    return result
+
+def sort_list_by_date(src_list):
+    src_list.sort(key=lambda item: 
+        int(item['date'][7:]) + 
+        int(item['date'][4:6]) * 31 + 
+        int(item['date'][:3]) * 12 * 31
+    )
 
 def create_analyzing_excel(src_list):
     wb = Workbook()
