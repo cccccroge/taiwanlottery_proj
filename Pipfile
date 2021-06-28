@@ -8,6 +8,7 @@ scrapy = "*"
 python-dateutil = "*"
 openpyxl = "*"
 numpy = "*"
+pyinstaller = "*"
 
 [dev-packages]
 
