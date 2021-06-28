@@ -6,4 +6,4 @@ DATA_FOLDER = os.path.join(ROOT_FOLDER, 'data')
 SCRAPY_FOLDER = os.path.join(ROOT_FOLDER, 'src', 'scrapy_proj')
 
 # hard coded path
-DAD_WINDOWS_DESKTOP = Path('C:\Uesrs\兆焱\Desktop\\')
+DAD_WINDOWS_DESKTOP = Path('C:/Users/兆焱/Desktop/')
