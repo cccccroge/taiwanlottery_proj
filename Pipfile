@@ -9,6 +9,7 @@ python-dateutil = "*"
 openpyxl = "*"
 numpy = "*"
 pyinstaller = "*"
+pefile = "*"
 
 [dev-packages]
 
