@@ -16,3 +16,12 @@ CRAWLING_META = {
         "form_prefix": "Lotto649Control_history",
     },
 }
+
+GAME_META = {
+    Game.GINTSAI_539: {
+        "num_max": 39,
+    },
+    Game.BIG_LOTTERY: {
+        "num_max": 49,
+    },
+}

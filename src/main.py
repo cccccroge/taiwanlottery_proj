@@ -4,18 +4,19 @@ from crawler import Crawler
 
 
 def main():
-    l = crawl_to_list()
-    create_analyzing_excel(l)
+    game_key = Game.BIG_LOTTERY
+    l = crawl_to_list(game_key)
+    create_analyzing_excel(l, game_key)
 
 
-def crawl_to_list():
-    crawler = Crawler(game_key=Game.GINTSAI_539, start_year_month="2021-12")
+def crawl_to_list(game_key):
+    crawler = Crawler(game_key=game_key, start_year_month="2018-07")
     crawler.start()
     return crawler.result
 
 
-def create_analyzing_excel(list):
-    exporter = ExcelExporter(list)
+def create_analyzing_excel(list, game_key):
+    exporter = ExcelExporter(list, game_key)
     exporter.execute()
 
 

@@ -44,8 +44,6 @@ class BigLotterySpider(scrapy.Spider):
             special_num = t.xpath(".//tr[5]/td[8]/span/span/text()").get()
             yield {
                 "date": date,
-                "nums": {
-                    "normal": [num_1, num_2, num_3, num_4, num_5, num_6],
-                    "special": [special_num],
-                },
+                "nums": [num_1, num_2, num_3, num_4, num_5, num_6, special_num],
+                "special_num": special_num,
             }
