@@ -1,6 +1,6 @@
 import scrapy
 from scrapy.http import FormRequest
-from datetime import datetime, date
+from datetime import date
 from dateutil.relativedelta import relativedelta
 from utils.constant import CRAWLING_META, Game
 from utils.date import iter_year_month

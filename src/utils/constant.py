@@ -9,10 +9,10 @@ class Game(Enum):
 CRAWLING_META = {
     Game.GINTSAI_539: {
         "url": "https://www.taiwanlottery.com.tw/Lotto/Dailycash/history.aspx",
-        "form_prefix": "D539",
+        "form_prefix": "D539Control_history1",
     },
     Game.BIG_LOTTERY: {
         "url": "https://www.taiwanlottery.com.tw/Lotto/Lotto649/history.aspx",
-        "form_prefix": "Lotto649",
+        "form_prefix": "Lotto649Control_history",
     },
 }

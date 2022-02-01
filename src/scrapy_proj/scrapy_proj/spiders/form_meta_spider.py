@@ -4,8 +4,6 @@ from utils.constant import CRAWLING_META
 
 
 class FormMetaSpider(scrapy.Spider):
-    name = "form_meta"
-
     def __init__(self, game_key):
         self.url = CRAWLING_META[game_key]["url"]
 

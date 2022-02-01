@@ -2,13 +2,13 @@ import scrapy
 from scrapy.http import FormRequest
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
+from utils.constant import CRAWLING_META, Game
 from utils.date import iter_year_month
 
 
 class BigLotterySpider(scrapy.Spider):
-    name = "big_lottery"
-
-    def __init__(self, start_year_month):
+    def __init__(self, form_meta, start_year_month):
+        self.form_meta = {**form_meta, **CRAWLING_META[Game.BIG_LOTTERY]}
         self.start_year_month = start_year_month
         self.end_year_month = (date.today() + relativedelta(months=1)).strftime("%Y-%m")
 
@@ -16,19 +16,23 @@ class BigLotterySpider(scrapy.Spider):
         for (year, month) in iter_year_month(
             self.start_year_month, self.end_year_month
         ):
-            url = "https://www.taiwanlottery.com.tw/Lotto/Lotto649/history.aspx"
+            url = self.form_meta["url"]
             formdata = {
-                "Lotto649Control_history$txtNO": "",
-                "Lotto649Control_history$chk": "radYM",
-                "Lotto649Control_history$dropYear": str(year - 1911),
-                "Lotto649Control_history$dropMonth": str(month),
-                "Lotto649Control_history$btnSubmit": "查詢",
+                "__VIEWSTATE": self.form_meta["view_state"],
+                "__VIEWSTATEGENERATOR": self.form_meta["view_state_generator"],
+                "__EVENTVALIDATION": self.form_meta["event_validation"],
+                f"{self.form_meta['form_prefix']}$txtNO": "",
+                f"{self.form_meta['form_prefix']}$chk": "radYM",
+                f"{self.form_meta['form_prefix']}$dropYear": str(year - 1911),
+                f"{self.form_meta['form_prefix']}$dropMonth": str(month),
+                f"{self.form_meta['form_prefix']}$btnSubmit": "查詢",
             }
             yield FormRequest(url=url, formdata=formdata, callback=self.parse)
 
     def parse(self, response):
-        tables = response.xpath('//*/table[contains(@class, "td_hm")]')
-
+        tables = response.xpath(
+            '//*/table[contains(@class, "td_hm") and contains(@class, "table_org")] | //*/table[contains(@class, "td_hm") and contains(@class, "table_gre")]'
+        )
         for t in tables:
             date = t.xpath(".//tr[2]/td[2]/span/span/text()").get()
             num_1 = t.xpath(".//tr[5]/td[2]/span/text()").get()
