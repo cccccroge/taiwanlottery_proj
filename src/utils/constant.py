@@ -1,14 +1,18 @@
-from scrapy_proj.scrapy_proj.spiders import gintsai539_spider, big_lottery_spider
+from enum import Enum
 
-GAMES = {
-    'gin': {
-        'key': 'gintsai539',
-        'spider': gintsai539_spider.Gintsai539Spider,
-        'label': '今彩539',
+
+class Game(Enum):
+    GINTSAI_539 = "今彩539"
+    BIG_LOTTERY = "大樂透"
+
+
+CRAWLING_META = {
+    Game.GINTSAI_539: {
+        "url": "https://www.taiwanlottery.com.tw/Lotto/Dailycash/history.aspx",
+        "form_prefix": "D539",
     },
-    'big': {
-        'key': 'big_lottery',
-        'spider': big_lottery_spider.BigLotterySpider,
-        'label': '大樂透',
+    Game.BIG_LOTTERY: {
+        "url": "https://www.taiwanlottery.com.tw/Lotto/Lotto649/history.aspx",
+        "form_prefix": "Lotto649",
     },
 }

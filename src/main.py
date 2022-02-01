@@ -1,36 +1,24 @@
 import os
 from utils.paths import SCRAPY_FOLDER, DATA_FOLDER
 from openpyxl import Workbook
-from utils.constant import GAMES
+from utils.constant import Game
 import numpy as np
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Border, Side, PatternFill
-from scrapy.crawler import CrawlerProcess
-from scrapy.utils.project import get_project_settings
-from scrapy.signalmanager import dispatcher
-from scrapy import signals
+from crawler import Crawler
 
-SETTINGS = {
-    'game': GAMES['gin'],
-    'start_year_month': '2018-01',
-}
 
 def main():
-    l = crawl_to_list(SETTINGS["game"], SETTINGS["start_year_month"])
-    sort_list_by_date(l)
-    create_analyzing_excel(l)
+    crawl_to_list()
+    # sort_list_by_date(l)
+    # create_analyzing_excel(l)
+    # print(l)
 
-def crawl_to_list(game, start_year_month):
-    result = []
-    def callback(signal, sender, item, response, spider):
-        result.append(item)
-    dispatcher.connect(callback, signal=signals.item_passed)
-
-    process = CrawlerProcess(get_project_settings())
-    process.crawl(game['spider'], start_year_month=start_year_month)
-    process.start()
-
-    return result
+def crawl_to_list():
+    Crawler(
+        game_key=Game.GINTSAI_539,
+        start_year_month='2020-01'
+    ).start()
 
 def sort_list_by_date(src_list):
     src_list.sort(key=lambda item: 
