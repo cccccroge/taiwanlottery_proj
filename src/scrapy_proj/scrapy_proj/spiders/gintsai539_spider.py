@@ -21,15 +21,15 @@ class Gintsai539Spider(scrapy.Spider):
                 "__VIEWSTATE": self.form_meta["view_state"],
                 "__VIEWSTATEGENERATOR": self.form_meta["view_state_generator"],
                 "__EVENTVALIDATION": self.form_meta["event_validation"],
-                f"{self.form_meta['form_prefix']}Control_history1$txtNO": "",
-                f"{self.form_meta['form_prefix']}Control_history1$chk": "radYM",
-                f"{self.form_meta['form_prefix']}Control_history1$dropYear": str(
+                f"{self.form_meta['form_prefix']}$txtNO": "",
+                f"{self.form_meta['form_prefix']}$chk": "radYM",
+                f"{self.form_meta['form_prefix']}$dropYear": str(
                     year - 1911
                 ),
-                f"{self.form_meta['form_prefix']}Control_history1$dropMonth": str(
+                f"{self.form_meta['form_prefix']}$dropMonth": str(
                     month
                 ),
-                f"{self.form_meta['form_prefix']}Control_history1$btnSubmit": "查詢",
+                f"{self.form_meta['form_prefix']}$btnSubmit": "查詢",
             }
             yield FormRequest(url=url, formdata=formdata, callback=self.parse)
 
