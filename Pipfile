@@ -11,6 +11,7 @@ numpy = "*"
 pyinstaller = "*"
 pefile = "*"
 black = "*"
+kivy = {extras = ["base"], version = "*"}
 
 [dev-packages]
 

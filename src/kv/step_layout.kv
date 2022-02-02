@@ -1,0 +1,28 @@
+#:kivy 1.0
+
+<StepLayout@BoxLayout>:
+    orientation: 'vertical'
+    padding: ['40sp', 0]
+    text: ''
+    Header:
+        text: root.text
+    Separator:
+
+<Header@Label>:
+    text: ''
+
+    font_name: 'font/Noto_Sans_TC/NotoSansTC-Bold.otf'
+    font_size: '32sp'
+    size_hint_y: None
+
+<Separator@Widget>:
+    thickness: 2
+
+    size_hint_y: None
+    height: self.thickness
+    canvas:
+        Color:
+            rgb: (1., 1., 1.)
+        Rectangle:
+            pos: self.x, self.y
+            size: self.width, self.thickness

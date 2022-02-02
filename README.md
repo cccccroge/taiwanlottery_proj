@@ -15,7 +15,8 @@ pip3 install pipenv
 install packages for the project
 
 ```
-python3 -m pipenv install
+python3 -m pipenv install # first time
+python3 -m pipenv install [package_name] # install dev package
 ```
 
 activate the virtual env at the project root
