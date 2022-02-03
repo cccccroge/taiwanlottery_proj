@@ -9,9 +9,18 @@
     MDBoxLayout:
         adaptive_height: True
         padding: ['60sp', '20sp']
-        spacing: '10sp'
-        GameButton:
-            text: '今彩539'
-        GameButton:
-            text: '大樂透'
+        DateInput:
+            hint_text: '開始時間'
+        Label:
+            size_hint_x: None
+            text: '~'
+            font_size: '16sp'
+        DateInput:
+            hint_text: '結束時間'
     NextStep:
+
+<DateInput>:
+    mode: "rectangle"
+    on_focus: self.open_date_picker()
+    font_name: 'font/Noto_Sans_TC/NotoSansTC-Bold.otf'
+    font_name_hint_text: 'font/Noto_Sans_TC/NotoSansTC-Bold.otf'

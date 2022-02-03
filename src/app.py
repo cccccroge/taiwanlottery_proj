@@ -6,12 +6,15 @@ import kivy
 from kivymd.app import MDApp
 from kivymd.uix.button import MDFillRoundFlatButton
 from kivymd.uix.behaviors.toggle_behavior import MDToggleButton
+from kivymd.uix.textfield import MDTextField
+from kivymd.uix.picker import MDDatePicker
 from kivy.lang.builder import Builder
 from kivy.core.window import Window
 from kivy.modules import inspector
 from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.anchorlayout import AnchorLayout
 import os.path
+import locale
 
 
 class RootWidget(ScreenManager):
@@ -33,22 +36,38 @@ class GameButton(MDFillRoundFlatButton, MDToggleButton):
         self.background_down = self.theme_cls.primary_light
 
 
+class DateInput(MDTextField):
+    def open_date_picker(self):
+        print("open")
+        picker = MDDatePicker(
+            title="選擇時間", font_name="font/Noto_Sans_TC/NotoSansTC-Bold.otf"
+        )
+        picker.bind(on_save=self.on_save)
+        picker.open()
+
+    def on_save(self, instance, value, date_range):
+        print("save")
+
+
 class MyApp(MDApp):
     def build(self):
         # set title
         self.title = "台灣彩券分析"
 
+        # setup locale
+        locale.setlocale(locale.LC_TIME, "zh_TW.UTF-8")
+
         # assign asset path
         kivy.resources.resource_add_path(ASSET_FOLDER)
 
         # assign kv path
-        Builder.load_file(os.path.join(KV_FOLDER, "layout.kv"))
+        Builder.load_file(os.path.join(KV_FOLDER, "common.kv"))
         Builder.load_file(os.path.join(KV_FOLDER, "choose_game.kv"))
         Builder.load_file(os.path.join(KV_FOLDER, "choose_range.kv"))
         Builder.load_file(os.path.join(KV_FOLDER, "root.kv"))
 
         # dark theme
-        self.theme_cls.theme_style = "Dark"
+        self.theme_cls.theme_style = "Light"
 
         root = RootWidget()
 
