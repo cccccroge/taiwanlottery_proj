@@ -1,9 +1,12 @@
 #:kivy 1.0
 
 <RootWidget>:
-    BoxLayout:
-        orientation: 'vertical'
-        StepLayout:
-            text: '請選擇遊戲'
-        BoxLayout:
-            id: step_content
+    Screen:
+        name: 'choose_game'
+        ChooseGame:
+    # Screen:
+    #     name: 'test'
+    #     ChooseRange:
+
+<Widget>:
+    font_name: 'font/Noto_Sans_TC/NotoSansTC-Bold.otf'

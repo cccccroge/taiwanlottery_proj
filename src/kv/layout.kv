@@ -1,0 +1,18 @@
+#:kivy 1.0
+
+<Header@MDBoxLayout>:
+    text: ''
+
+    adaptive_height: True
+    MDLabel:
+        text: root.text
+        halign: 'center'
+        font_size: '32sp'
+
+<NextStep>:
+    anchor_y: 'bottom'
+    MDIconButton:
+        icon: "arrow-right-bold-circle"
+        user_font_size: "80sp"
+        font_name: 'Icons'
+        on_press: root.slide_to_next()
