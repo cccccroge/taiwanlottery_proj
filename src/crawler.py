@@ -16,9 +16,10 @@ spiders = {
 
 
 class Crawler:
-    def __init__(self, game_key, start_year_month):
+    def __init__(self, game_key, start_year_month, end_year_month):
         self.game_key = game_key
         self.start_year_month = start_year_month
+        self.end_year_month = end_year_month
         configure_logging({"LOG_FORMAT": "%(levelname)s: %(message)s"})
         self.runner = CrawlerRunner()
         self.result = []
@@ -43,6 +44,7 @@ class Crawler:
             spiders[self.game_key],
             form_meta=self.form_meta,
             start_year_month=self.start_year_month,
+            end_year_month=self.end_year_month,
         )
         reactor.stop()
 

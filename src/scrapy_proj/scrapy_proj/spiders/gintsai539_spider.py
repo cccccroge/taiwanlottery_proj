@@ -7,10 +7,10 @@ from utils.date import iter_year_month
 
 
 class Gintsai539Spider(scrapy.Spider):
-    def __init__(self, form_meta, start_year_month):
+    def __init__(self, form_meta, start_year_month, end_year_month):
         self.form_meta = {**form_meta, **CRAWLING_META[Game.GINTSAI_539]}
         self.start_year_month = start_year_month
-        self.end_year_month = (date.today() + relativedelta(months=1)).strftime("%Y-%m")
+        self.end_year_month = end_year_month
 
     def start_requests(self):
         for (year, month) in iter_year_month(
@@ -23,12 +23,8 @@ class Gintsai539Spider(scrapy.Spider):
                 "__EVENTVALIDATION": self.form_meta["event_validation"],
                 f"{self.form_meta['form_prefix']}$txtNO": "",
                 f"{self.form_meta['form_prefix']}$chk": "radYM",
-                f"{self.form_meta['form_prefix']}$dropYear": str(
-                    year - 1911
-                ),
-                f"{self.form_meta['form_prefix']}$dropMonth": str(
-                    month
-                ),
+                f"{self.form_meta['form_prefix']}$dropYear": str(year - 1911),
+                f"{self.form_meta['form_prefix']}$dropMonth": str(month),
                 f"{self.form_meta['form_prefix']}$btnSubmit": "查詢",
             }
             yield FormRequest(url=url, formdata=formdata, callback=self.parse)

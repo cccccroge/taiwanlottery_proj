@@ -7,10 +7,10 @@ from utils.date import iter_year_month
 
 
 class BigLotterySpider(scrapy.Spider):
-    def __init__(self, form_meta, start_year_month):
+    def __init__(self, form_meta, start_year_month, end_year_month):
         self.form_meta = {**form_meta, **CRAWLING_META[Game.BIG_LOTTERY]}
         self.start_year_month = start_year_month
-        self.end_year_month = (date.today() + relativedelta(months=1)).strftime("%Y-%m")
+        self.end_year_month = end_year_month
 
     def start_requests(self):
         for (year, month) in iter_year_month(
