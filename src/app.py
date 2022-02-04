@@ -57,7 +57,7 @@ class MyApp(MDApp):
             d2 = self.time_range["end"]
             self.total_count = (d2.year - d1.year) * 12 + d2.month - d1.month
 
-    def start_crawl_and_analyze(self):
+    def crawl_and_analyze(self):
         crawler = Crawler(
             game_key=self.game_key,
             start_year_month=self.time_range["start"].strftime("%Y-%m"),
@@ -69,8 +69,8 @@ class MyApp(MDApp):
         exporter = ExcelExporter(list, self.game_key)
         exporter.execute()
 
-    def async_start_crawl_and_analyze(self):
-        thread = Thread(target=self.start_crawl_and_analyze)
+    def async_crawl_and_analyze(self):
+        thread = Thread(target=self.crawl_and_analyze)
         thread.start()
 
 

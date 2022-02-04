@@ -1,10 +1,14 @@
-import os
-from utils.constant import GAME_META
+from datetime import date
 from utils.paths import DATA_FOLDER
+from utils.constant import GAME_META
 from openpyxl import Workbook
 import numpy as np
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Border, Side, PatternFill, Font
+from tkinter import filedialog
+import os
+import platform
+import subprocess
 
 
 class ExcelExporter:
@@ -19,7 +23,15 @@ class ExcelExporter:
         self.__construct_sum_sheet()
         self.__construct_tail_sheet()
         self.__construct_indi_sheet()
-        self.wb.save(os.path.join(DATA_FOLDER, f"{self.output_name}.xlsx"))
+
+        dir = (
+            filedialog.askdirectory() if platform.system() != "Darwin" else DATA_FOLDER
+        )
+        path = os.path.join(
+            dir, f"{self.output_name}_{date.today().strftime('%Y_%m%d')}.xlsx"
+        )
+
+        self.wb.save(path)
 
     def __construct_sum_sheet(self):
         ws = self.wb.active
@@ -200,3 +212,11 @@ class ExcelExporter:
     def __set_emphasized_font(self, ws, cell_range):
         cell = ws[cell_range]
         cell.font = Font(color="FF0000", bold=True)
+
+    def open_file(self, path):
+        if platform.system() == "Windows":
+            os.startfile(path)
+        elif platform.system() == "Darwin":
+            subprocess.Popen(["open", path])
+        else:
+            subprocess.Popen(["xdg-open", path])
