@@ -33,6 +33,7 @@ class ScrapyProjSpiderMiddleware:
         # it has processed the response.
 
         # Must return an iterable of Request, or item objects.
+        print("output")
         for i in result:
             yield i
 
@@ -53,7 +54,7 @@ class ScrapyProjSpiderMiddleware:
             yield r
 
     def spider_opened(self, spider):
-        spider.logger.info('Spider opened: %s' % spider.name)
+        spider.logger.info("Spider opened: %s" % spider.name)
 
 
 class ScrapyProjDownloaderMiddleware:
@@ -100,4 +101,4 @@ class ScrapyProjDownloaderMiddleware:
         pass
 
     def spider_opened(self, spider):
-        spider.logger.info('Spider opened: %s' % spider.name)
+        spider.logger.info("Spider opened: %s" % spider.name)

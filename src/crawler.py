@@ -1,12 +1,14 @@
+import json
 from scrapy.crawler import CrawlerRunner
 from scrapy.signalmanager import dispatcher
 from scrapy import signals
-from scrapy.utils.log import configure_logging
 from scrapy_proj.scrapy_proj.spiders.form_meta_spider import FormMetaSpider
 from scrapy_proj.scrapy_proj.spiders.big_lottery_spider import BigLotterySpider
 from scrapy_proj.scrapy_proj.spiders.gintsai539_spider import Gintsai539Spider
 from utils.constant import Game
 from twisted.internet import reactor, defer
+from scrapy.utils.project import get_project_settings
+from kivymd.app import MDApp
 
 
 spiders = {
@@ -20,8 +22,7 @@ class Crawler:
         self.game_key = game_key
         self.start_year_month = start_year_month
         self.end_year_month = end_year_month
-        # configure_logging({"LOG_FORMAT": "%(levelname)s: %(message)s"})
-        self.runner = CrawlerRunner()
+        self.runner = CrawlerRunner(get_project_settings())
         self.result = []
 
     def start(self):
@@ -36,10 +37,17 @@ class Crawler:
 
         def callback2(signal, sender, item, response, spider):
             self.result.append(item)
+            app = MDApp.get_running_app()
+            app.info_text += f"getting item: {json.dumps(item)}\n"
+
+        def logging(response, request, spider):
+            app = MDApp.get_running_app()
+            app.scraped_count += 1
 
         dispatcher.connect(callback, signal=signals.item_passed)
         yield self.runner.crawl(FormMetaSpider, self.game_key)
         dispatcher.connect(callback2, signal=signals.item_passed)
+        dispatcher.connect(logging, signal=signals.response_received)
         yield self.runner.crawl(
             spiders[self.game_key],
             form_meta=self.form_meta,

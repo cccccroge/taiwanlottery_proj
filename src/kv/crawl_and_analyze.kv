@@ -11,7 +11,7 @@
         padding: ['60sp', '20sp']
         MDProgressBar:
             size_hint_y: None
-            value: 50
+            value: 0 if app.total_count == 0 else (app.scraped_count / app.total_count) * 100
         DebugConsole:
             
 
@@ -23,3 +23,10 @@
         Rectangle:
             pos: self.pos
             size: self.size
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: ['20sp', 0]
+        MDLabel:
+            size_hint_y: None
+            text: app.info_text
+        Widget:

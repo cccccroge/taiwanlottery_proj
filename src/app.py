@@ -1,3 +1,4 @@
+from threading import Thread
 from excel_exporter import ExcelExporter
 from widgets import RootWidget
 from utils.paths import ASSET_FOLDER, KV_FOLDER
@@ -8,7 +9,7 @@ from kivymd.app import MDApp
 from kivy.core.window import Window
 from kivy.modules import inspector
 from kivy.lang.builder import Builder
-from kivy.properties import StringProperty, DictProperty
+from kivy.properties import StringProperty, DictProperty, NumericProperty
 import os.path
 import locale
 
@@ -16,6 +17,11 @@ import locale
 class MyApp(MDApp):
     game_key = StringProperty(Game.GINTSAI_539)
     time_range = DictProperty({"start": "", "end": ""})
+
+    info_text = StringProperty("")
+
+    total_count = NumericProperty(0)
+    scraped_count = NumericProperty(0)
 
     def build(self):
         # set title
@@ -46,22 +52,26 @@ class MyApp(MDApp):
         key = "start" if type == "開始時間" else "end"
         self.time_range[key] = value
 
-    def start_crawl_and_analyze(self):
-        self.__crawl_to_list()
-        self.__create_analyzing_excel()
+        if self.time_range["start"] and self.time_range["end"]:
+            d1 = self.time_range["start"]
+            d2 = self.time_range["end"]
+            self.total_count = (d2.year - d1.year) * 12 + d2.month - d1.month
 
-    def __crawl_to_list(self):
+    def start_crawl_and_analyze(self):
         crawler = Crawler(
             game_key=self.game_key,
             start_year_month=self.time_range["start"].strftime("%Y-%m"),
             end_year_month=self.time_range["end"].strftime("%Y-%m"),
         )
         crawler.start()
-        self.list = crawler.result
-
-    def __create_analyzing_excel(self):
-        exporter = ExcelExporter(self.list, self.game_key)
+        list = crawler.result
+        print(f"total_count: {self.total_count}, scraped_count: {self.scraped_count}")
+        exporter = ExcelExporter(list, self.game_key)
         exporter.execute()
+
+    def async_start_crawl_and_analyze(self):
+        thread = Thread(target=self.start_crawl_and_analyze)
+        thread.start()
 
 
 if __name__ == "__main__":
