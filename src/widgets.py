@@ -42,5 +42,4 @@ class DateInput(MDTextField):
             self.open_date_picker()
 
     def on_save(self, instance, value, date_range):
-        self.text = value.strftime("%Y-%m-%d")
         MDApp.get_running_app().select_range(self.hint_text, value)

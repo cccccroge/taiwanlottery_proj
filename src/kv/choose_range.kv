@@ -11,12 +11,14 @@
         padding: ['60sp', '20sp']
         DateInput:
             hint_text: '開始時間'
+            text: app.time_range['start'].strftime('%Y-%m-%d')
         Label:
             size_hint_x: None
             text: '~'
             font_size: '16sp'
         DateInput:
             hint_text: '結束時間'
+            text: app.time_range['end'].strftime('%Y-%m-%d')
     NextStep:
 
 <DateInput>:

@@ -28,7 +28,7 @@ class ExcelExporter:
             filedialog.askdirectory() if platform.system() != "Darwin" else DATA_FOLDER
         )
         path = os.path.join(
-            dir, f"{self.output_name}_{date.today().strftime('%Y_%m%d')}.xlsx"
+            dir, f"{self.output_name}_{date.today().strftime('%Y%m%d_%H%M%S')}.xlsx"
         )
 
         self.wb.save(path)

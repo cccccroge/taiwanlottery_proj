@@ -1,22 +1,33 @@
+import datetime
+from dateutil.relativedelta import relativedelta
 from threading import Thread
 from excel_exporter import ExcelExporter
 from widgets import RootWidget
 from utils.paths import ASSET_FOLDER, KV_FOLDER
-from utils.constant import Game
 from crawler import Crawler
 import kivy
 from kivymd.app import MDApp
 from kivy.core.window import Window
 from kivy.modules import inspector
 from kivy.lang.builder import Builder
-from kivy.properties import StringProperty, DictProperty, NumericProperty
+from kivy.properties import (
+    StringProperty,
+    DictProperty,
+    NumericProperty,
+    ObjectProperty,
+)
 import os.path
 import locale
 
 
 class MyApp(MDApp):
-    game_key = StringProperty(Game.GINTSAI_539)
-    time_range = DictProperty({"start": "", "end": ""})
+    game_key = ObjectProperty("")
+    time_range = DictProperty(
+        {
+            "start": datetime.date.today() - relativedelta(months=12),
+            "end": datetime.date.today(),
+        }
+    )
 
     info_text = StringProperty("")
 
@@ -61,7 +72,9 @@ class MyApp(MDApp):
         crawler = Crawler(
             game_key=self.game_key,
             start_year_month=self.time_range["start"].strftime("%Y-%m"),
-            end_year_month=self.time_range["end"].strftime("%Y-%m"),
+            end_year_month=(self.time_range["end"] + relativedelta(months=1)).strftime(
+                "%Y-%m"
+            ),
         )
         crawler.start()
         list = crawler.result
@@ -75,4 +88,5 @@ class MyApp(MDApp):
 
 
 if __name__ == "__main__":
+    os.environ["KIVY_GL_BACKEND"] = "angle_sdl2"
     MyApp().run()
