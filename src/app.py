@@ -70,6 +70,7 @@ class MyApp(MDApp):
         Builder.load_file(os.path.join(KV_FOLDER, "common.kv"))
         Builder.load_file(os.path.join(KV_FOLDER, "choose_game.kv"))
         Builder.load_file(os.path.join(KV_FOLDER, "choose_range.kv"))
+        Builder.load_file(os.path.join(KV_FOLDER, "crawl_and_analyze.kv"))
         Builder.load_file(os.path.join(KV_FOLDER, "root.kv"))
 
         # dark theme
