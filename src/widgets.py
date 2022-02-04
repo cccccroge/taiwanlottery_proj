@@ -12,12 +12,7 @@ class RootWidget(ScreenManager):
 
 
 class NextStep(AnchorLayout):
-    def slide_to_next(self):
-        sm = MDApp.get_running_app().root
-        names = sm.screen_names
-        idx = names.index(sm.current_screen.name)
-        next_idx = (idx + 1) % len(names)
-        sm.current = names[next_idx]
+    pass
 
 
 class GameButton(MDFillRoundFlatButton, MDToggleButton):

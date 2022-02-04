@@ -24,14 +24,14 @@ class MyApp(MDApp):
     game_key = ObjectProperty("")
     time_range = DictProperty(
         {
-            "start": datetime.date.today() - relativedelta(months=12),
+            "start": datetime.date.today() - relativedelta(months=11),
             "end": datetime.date.today(),
         }
     )
 
     info_text = StringProperty("")
 
-    total_count = NumericProperty(0)
+    total_count = NumericProperty(12)
     scraped_count = NumericProperty(0)
 
     def build(self):
@@ -46,6 +46,7 @@ class MyApp(MDApp):
         Builder.load_file(os.path.join(KV_FOLDER, "choose_game.kv"))
         Builder.load_file(os.path.join(KV_FOLDER, "choose_range.kv"))
         Builder.load_file(os.path.join(KV_FOLDER, "crawl_and_analyze.kv"))
+        Builder.load_file(os.path.join(KV_FOLDER, "finish.kv"))
         Builder.load_file(os.path.join(KV_FOLDER, "root.kv"))
         # dark theme
         self.theme_cls.theme_style = "Dark"
@@ -55,6 +56,13 @@ class MyApp(MDApp):
         # inspector.create_inspector(Window, root)
 
         return root
+
+    def slide_to_next(self):
+        sm = self.root
+        names = sm.screen_names
+        idx = names.index(sm.current_screen.name)
+        next_idx = (idx + 1) % len(names)
+        sm.current = names[next_idx]
 
     def select_game(self, game_key):
         self.game_key = game_key
@@ -81,6 +89,8 @@ class MyApp(MDApp):
         print(f"total_count: {self.total_count}, scraped_count: {self.scraped_count}")
         exporter = ExcelExporter(list, self.game_key)
         exporter.execute()
+
+        self.slide_to_next()
 
     def async_crawl_and_analyze(self):
         thread = Thread(target=self.crawl_and_analyze)

@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime
 from utils.paths import DATA_FOLDER
 from utils.constant import GAME_META
 from openpyxl import Workbook
@@ -28,7 +28,7 @@ class ExcelExporter:
             filedialog.askdirectory() if platform.system() != "Darwin" else DATA_FOLDER
         )
         path = os.path.join(
-            dir, f"{self.output_name}_{date.today().strftime('%Y%m%d_%H%M%S')}.xlsx"
+            dir, f"{self.output_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
         )
 
         self.wb.save(path)
