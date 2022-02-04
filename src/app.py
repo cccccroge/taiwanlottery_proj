@@ -38,15 +38,21 @@ class GameButton(MDFillRoundFlatButton, MDToggleButton):
 
 class DateInput(MDTextField):
     def open_date_picker(self):
-        print("open")
         picker = MDDatePicker(
-            title="選擇時間", font_name="font/Noto_Sans_TC/NotoSansTC-Bold.otf"
+            title="選擇時間",
+            title_input="輸入時間",
+            font_name="font/Noto_Sans_TC/NotoSansTC-Bold.otf",
         )
         picker.bind(on_save=self.on_save)
         picker.open()
 
+    def on_focus(self, instance, value):
+        if value:
+            super().on_focus(instance, value)
+            self.open_date_picker()
+
     def on_save(self, instance, value, date_range):
-        print("save")
+        self.text = value.strftime("%Y-%m-%d")
 
 
 class MyApp(MDApp):
@@ -67,7 +73,7 @@ class MyApp(MDApp):
         Builder.load_file(os.path.join(KV_FOLDER, "root.kv"))
 
         # dark theme
-        self.theme_cls.theme_style = "Light"
+        self.theme_cls.theme_style = "Dark"
 
         root = RootWidget()
 
