@@ -20,7 +20,7 @@ class Crawler:
         self.game_key = game_key
         self.start_year_month = start_year_month
         self.end_year_month = end_year_month
-        configure_logging({"LOG_FORMAT": "%(levelname)s: %(message)s"})
+        # configure_logging({"LOG_FORMAT": "%(levelname)s: %(message)s"})
         self.runner = CrawlerRunner()
         self.result = []
 

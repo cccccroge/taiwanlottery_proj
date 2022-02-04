@@ -1,4 +1,3 @@
-from pdb import set_trace
 from excel_exporter import ExcelExporter
 from widgets import RootWidget
 from utils.paths import ASSET_FOLDER, KV_FOLDER
@@ -12,7 +11,6 @@ from kivy.lang.builder import Builder
 from kivy.properties import StringProperty, DictProperty
 import os.path
 import locale
-from threading import Thread
 
 
 class MyApp(MDApp):
@@ -48,16 +46,9 @@ class MyApp(MDApp):
         key = "start" if type == "開始時間" else "end"
         self.time_range[key] = value
 
-    def async_start_crawl_and_analyze(self):
-        t = Thread(target=self.__start_crawl_and_analyze)
-        t.start()
-
-    def __start_crawl_and_analyze(self):
-        try:
-            self.__crawl_to_list()
-            self.__create_analyzing_excel()
-        except:
-            set_trace()
+    def start_crawl_and_analyze(self):
+        self.__crawl_to_list()
+        self.__create_analyzing_excel()
 
     def __crawl_to_list(self):
         crawler = Crawler(

@@ -1,4 +1,5 @@
 #:kivy 1.0
+#:import Game utils.constant.Game
 
 <ChooseGame@MDBoxLayout>:
     orientation: 'vertical'
@@ -12,12 +13,14 @@
         spacing: '10sp'
         GameButton:
             text: '今彩539'
+            key: Game.GINTSAI_539
         GameButton:
             text: '大樂透'
+            key: Game.BIG_LOTTERY
     NextStep:
 
 <GameButton>:
     group: 'game'
     font_size: '16sp'
     font_name: 'font/Noto_Sans_TC/NotoSansTC-Bold.otf'
-    on_press: app.select_game(self.text)
+    on_press: app.select_game(self.key)

@@ -1,11 +1,10 @@
 import os
-from utils.constant import Game, GAME_META
+from utils.constant import GAME_META
 from utils.paths import DATA_FOLDER
 from openpyxl import Workbook
 import numpy as np
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Border, Side, PatternFill, Font
-from pdb import set_trace
 
 
 class ExcelExporter:
