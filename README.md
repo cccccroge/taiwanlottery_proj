@@ -1,10 +1,15 @@
-# Setup for Mac
+# Install python and pip
 
-install pip via (for 2.7)
+python version: 3.8
 
+for mac,
 ```
 curl https://bootstrap.pypa.io/pip/2.7/get-pip.py | python
 ```
+
+for windows, use installer
+
+# Setup for Mac
 
 install pipenv
 
@@ -23,4 +28,10 @@ activate the virtual env at the project root
 
 ```
 pipenv shell
+```
+
+# Windows trouble shooting
+```
+python -m pip install kivy.deps.sdl2
+python -m pip install kivy.deps.glew
 ```
